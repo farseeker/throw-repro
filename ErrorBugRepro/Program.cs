@@ -19,9 +19,15 @@ namespace ErrorBugRepro
                 Console.WriteLine(runs);
                 try
                 {
-                    Task myTask = new Task(() => throwException());
-                    myTask.Start();
+                    Task myTask = throwException();
                     myTask.Wait();
+                }
+                catch (AggregateException ag)
+                {
+                    foreach (Exception ex in ag.InnerExceptions)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                 }
                 catch (Exception ex)
                 {
